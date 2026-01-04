@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useTheme, Theme } from "@/contexts/ThemeContext";
-import { Moon, Sun, Palette } from "lucide-react";
+import { Moon, Sun, Palette, Star } from "lucide-react";
 
 const THEMES: { value: Theme; label: string; icon: typeof Moon }[] = [
   { value: "pink", label: "Cotton Candy", icon: Sun },
   { value: "twilight", label: "Twilight Zone", icon: Moon },
+  { value: "midnight-zone", label: "Midnight Zone", icon: Star },
 ];
 
 export function ThemeSwitcher() {

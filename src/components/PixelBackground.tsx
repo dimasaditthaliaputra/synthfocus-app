@@ -8,27 +8,33 @@ import { useTheme, Theme } from "@/contexts/ThemeContext";
  * Theme Configuration
  * - pink: 5 layers with animated airplane on layer 2
  * - twilight: 4 layers with twinkling stars on layer 2
+ * - midnight-zone: 4 layers with animated moon (bounce + glow) on layer 2
  */
-const THEME_CONFIG: Record<
-  Theme,
-  {
-    path: string;
-    layerCount: number;
-    hasAirplaneAnimation: boolean;
-    layerAlts: string[];
-  }
-> = {
+interface ThemeLayerConfig {
+  path: string;
+  layerCount: number;
+  layer2Animation: "airplane" | "twinkle" | "moon" | "none";
+  layerAlts: string[];
+}
+
+const THEME_CONFIG: Record<Theme, ThemeLayerConfig> = {
   pink: {
     path: "/theme/pink",
     layerCount: 5,
-    hasAirplaneAnimation: true,
+    layer2Animation: "airplane",
     layerAlts: ["Sky background", "Airplane", "Distant clouds", "Mid-ground clouds", "Foreground clouds"],
   },
   twilight: {
     path: "/theme/twilight",
     layerCount: 4,
-    hasAirplaneAnimation: false,
+    layer2Animation: "twinkle",
     layerAlts: ["Color background", "Stars", "Cloud layer 1", "Cloud layer 2"],
+  },
+  "midnight-zone": {
+    path: "/theme/midnight-zone",
+    layerCount: 4,
+    layer2Animation: "moon",
+    layerAlts: ["Dark sky base", "Moon & Stars", "Background clouds", "Foreground clouds"],
   },
 };
 
@@ -56,7 +62,7 @@ export function PixelBackground() {
 
   // Initial trigger for airplane animation (only for pink theme)
   useEffect(() => {
-    if (!config.hasAirplaneAnimation) {
+    if (config.layer2Animation !== "airplane") {
       setIsFlying(false);
       return;
     }
@@ -66,10 +72,66 @@ export function PixelBackground() {
     }, 1000);
 
     return () => clearTimeout(initialDelay);
-  }, [startFlight, config.hasAirplaneAnimation]);
+  }, [startFlight, config.layer2Animation]);
 
   const commonImageStyles = "w-full h-full object-cover absolute inset-0";
   const pixelatedStyle = { imageRendering: "pixelated" as const };
+
+  // Render Layer 2 based on animation type
+  const renderLayer2 = () => {
+    switch (config.layer2Animation) {
+      case "airplane":
+        return (
+          <div
+            className={`absolute z-10 w-[80vw] h-[40vw] ${isFlying ? "animate-fly-across" : "opacity-0"}`}
+            style={{
+              top: 0,
+              left: 0,
+              ...pixelatedStyle,
+            }}
+            onAnimationEnd={handleAnimationEnd}
+          >
+            <Image
+              src={`${config.path}/2.png`}
+              alt={config.layerAlts[1]}
+              fill
+              className="object-contain"
+              style={pixelatedStyle}
+            />
+          </div>
+        );
+      case "twinkle":
+        return (
+          <Image
+            src={`${config.path}/2.png`}
+            alt={config.layerAlts[1]}
+            fill
+            className={`${commonImageStyles} z-10 animate-twinkle`}
+            style={pixelatedStyle}
+          />
+        );
+      case "moon":
+        return (
+          <Image
+            src={`${config.path}/2.png`}
+            alt={config.layerAlts[1]}
+            fill
+            className={`${commonImageStyles} z-10 animate-moon`}
+            style={pixelatedStyle}
+          />
+        );
+      default:
+        return (
+          <Image
+            src={`${config.path}/2.png`}
+            alt={config.layerAlts[1]}
+            fill
+            className={`${commonImageStyles} z-10`}
+            style={pixelatedStyle}
+          />
+        );
+    }
+  };
 
   return (
     <div className="fixed inset-0 -z-50 pointer-events-none overflow-hidden bg-sky">
@@ -84,35 +146,7 @@ export function PixelBackground() {
       />
 
       {/* Layer 2: Theme-specific animated layer */}
-      {config.hasAirplaneAnimation ? (
-        // Pink theme: Airplane with fly animation
-        <div
-          className={`absolute z-10 w-[80vw] h-[40vw] ${isFlying ? "animate-fly-across" : "opacity-0"}`}
-          style={{
-            top: 0,
-            left: 0,
-            ...pixelatedStyle,
-          }}
-          onAnimationEnd={handleAnimationEnd}
-        >
-          <Image
-            src={`${config.path}/2.png`}
-            alt={config.layerAlts[1]}
-            fill
-            className="object-contain"
-            style={pixelatedStyle}
-          />
-        </div>
-      ) : (
-        // Twilight theme: Stars with twinkling animation
-        <Image
-          src={`${config.path}/2.png`}
-          alt={config.layerAlts[1]}
-          fill
-          className={`${commonImageStyles} z-10 animate-twinkle`}
-          style={pixelatedStyle}
-        />
-      )}
+      {renderLayer2()}
 
       {/* Layer 3: Cloud layer 1 (z-20) - Static */}
       <Image

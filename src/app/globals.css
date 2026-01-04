@@ -128,6 +128,32 @@
   --color-sky-reflection-800: #1d3a49;
   --color-sky-reflection-900: #0f1d24;
   --color-sky-reflection-950: #0a141a;
+
+  /* Deep Twilight Palette (Midnight Zone) */
+  --color-deep-twilight-50: #e5ebff;
+  --color-deep-twilight-100: #ccd8ff;
+  --color-deep-twilight-200: #99b1ff;
+  --color-deep-twilight-300: #668aff;
+  --color-deep-twilight-400: #3363ff;
+  --color-deep-twilight-500: #003bff;
+  --color-deep-twilight-600: #0030cc;
+  --color-deep-twilight-700: #002499;
+  --color-deep-twilight-800: #001866;
+  --color-deep-twilight-900: #000c33;
+  --color-deep-twilight-950: #000824;
+
+  /* Midnight Blue Palette */
+  --color-midnight-blue-50: #e5e5ff;
+  --color-midnight-blue-100: #ccccff;
+  --color-midnight-blue-200: #9999ff;
+  --color-midnight-blue-300: #6666ff;
+  --color-midnight-blue-400: #3333ff;
+  --color-midnight-blue-500: #0000ff;
+  --color-midnight-blue-600: #0000cc;
+  --color-midnight-blue-700: #000099;
+  --color-midnight-blue-800: #000066;
+  --color-midnight-blue-900: #000033;
+  --color-midnight-blue-950: #000024;
 }
 
 @theme inline {
@@ -241,6 +267,42 @@
   --theme-cat-college: #c63990; /* petal-pink-500 */
   --theme-cat-coding: #4787b8; /* blue-bell-500 */
   --theme-cat-other: #744d80; /* vintage-lavender-600 */
+}
+
+/* MIDNIGHT ZONE THEME - Deep Night Bioluminescent Blue */
+:root[data-theme="midnight-zone"] {
+  /* Semantic Variables */
+  --synth-bg: var(--color-deep-twilight-950);
+  --synth-panel: var(--color-deep-twilight-800);
+  --synth-text: var(--color-deep-twilight-50);
+  --synth-text-secondary: var(--color-deep-twilight-200);
+  --synth-border: var(--color-deep-twilight-600);
+  --synth-accent: var(--color-deep-twilight-400);
+  --synth-accent-secondary: var(--color-deep-twilight-300);
+  --synth-shadow: var(--color-deep-twilight-950);
+
+  /* Theme Variables for @theme inline - Midnight Overrides */
+  --theme-sky: #000824; /* deep-twilight-950 */
+  --theme-sky-light: #000c33; /* deep-twilight-900 */
+  --theme-sky-dark: #000124; /* near black */
+
+  --theme-cloud-white: #001866; /* deep-twilight-800 */
+  --theme-cloud-cream: #002499; /* deep-twilight-700 */
+  --theme-cloud-shadow: #000c33; /* deep-twilight-900 */
+
+  --theme-ink: #e5ebff; /* deep-twilight-50 */
+  --theme-ink-dim: #99b1ff; /* deep-twilight-200 */
+  --theme-ink-border: #0030cc; /* deep-twilight-600 */
+
+  --theme-pop-pink: #3363ff; /* deep-twilight-400 */
+  --theme-pop-rose: #668aff; /* deep-twilight-300 */
+  --theme-pop-gold: #003bff; /* deep-twilight-500 */
+  --theme-pop-danger: #6666ff; /* midnight-blue-300 */
+
+  --theme-cat-work: #3363ff; /* deep-twilight-400 */
+  --theme-cat-college: #668aff; /* deep-twilight-300 */
+  --theme-cat-coding: #003bff; /* deep-twilight-500 */
+  --theme-cat-other: #99b1ff; /* deep-twilight-200 */
 }
 
 /* Base Styles */
@@ -557,4 +619,24 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 0.3s steps(6) forwards;
+}
+
+/* ===================================
+   MOON FLOAT ANIMATION (Midnight Zone)
+   =================================== */
+@keyframes moonFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+    filter: drop-shadow(0 0 10px rgba(51, 99, 255, 0.4)); /* Dim Glow */
+  }
+  50% {
+    transform: translateY(-15px); /* Bounce Up */
+    filter: drop-shadow(0 0 25px rgba(51, 99, 255, 0.9)); /* Bright Pulse */
+  }
+}
+
+.animate-moon {
+  animation: moonFloat 4s ease-in-out infinite;
+  will-change: transform, filter;
 }

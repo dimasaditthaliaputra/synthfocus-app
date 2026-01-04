@@ -2,8 +2,10 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 
-export type Theme = "pink" | "twilight";
+export type Theme = "pink" | "twilight" | "midnight-zone";
 export type TransitionStage = "idle" | "wipe-in" | "wipe-out";
+
+const VALID_THEMES: Theme[] = ["pink", "twilight", "midnight-zone"];
 
 interface ThemeContextType {
   theme: Theme;
@@ -23,7 +25,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Load theme from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem("synthfocus-theme") as Theme;
-    if (savedTheme && (savedTheme === "pink" || savedTheme === "twilight")) {
+    if (savedTheme && VALID_THEMES.includes(savedTheme)) {
       setThemeState(savedTheme);
       document.documentElement.setAttribute("data-theme", savedTheme);
     }
