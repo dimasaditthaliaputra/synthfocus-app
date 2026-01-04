@@ -2,25 +2,44 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { useTheme, Theme } from "@/contexts/ThemeContext";
 
 /**
- * PixelBackground - 5-layer parallax pixel art background with animated airplane
- *
- * Layers (back to front):
- * 1. 1.png - Sky Base (z-0, static)
- * 2. 2.png - Airplane (z-10, animated)
- * 3. 3.png - Distant Clouds (z-20, static)
- * 4. 4.png - Mid-ground Clouds (z-30, static)
- * 5. 5.png - Foreground Details (z-40, static)
+ * Theme Configuration
+ * - pink: 5 layers with animated airplane on layer 2
+ * - twilight: 4 layers with twinkling stars on layer 2
  */
-export function PixelBackground() {
-  const [isFlying, setIsFlying] = useState(false);
-  const [topPosition, setTopPosition] = useState(15); // Initial 15%
+const THEME_CONFIG: Record<
+  Theme,
+  {
+    path: string;
+    layerCount: number;
+    hasAirplaneAnimation: boolean;
+    layerAlts: string[];
+  }
+> = {
+  pink: {
+    path: "/theme/pink",
+    layerCount: 5,
+    hasAirplaneAnimation: true,
+    layerAlts: ["Sky background", "Airplane", "Distant clouds", "Mid-ground clouds", "Foreground clouds"],
+  },
+  twilight: {
+    path: "/theme/twilight",
+    layerCount: 4,
+    hasAirplaneAnimation: false,
+    layerAlts: ["Color background", "Stars", "Cloud layer 1", "Cloud layer 2"],
+  },
+};
 
-  // Start a new flight with random vertical position
+export function PixelBackground() {
+  const { theme } = useTheme();
+  const config = THEME_CONFIG[theme];
+
+  const [isFlying, setIsFlying] = useState(false);
+
+  // Start a new flight
   const startFlight = useCallback(() => {
-    const newTop = Math.random() * 30; // 0-30% of viewport height
-    setTopPosition(newTop);
     setIsFlying(true);
   }, []);
 
@@ -35,72 +54,94 @@ export function PixelBackground() {
     }, delay);
   }, [startFlight]);
 
-  // Initial trigger
+  // Initial trigger for airplane animation (only for pink theme)
   useEffect(() => {
-    // Start first flight after a short delay
+    if (!config.hasAirplaneAnimation) {
+      setIsFlying(false);
+      return;
+    }
+
     const initialDelay = setTimeout(() => {
       startFlight();
     }, 1000);
 
     return () => clearTimeout(initialDelay);
-  }, [startFlight]);
+  }, [startFlight, config.hasAirplaneAnimation]);
 
   const commonImageStyles = "w-full h-full object-cover absolute inset-0";
   const pixelatedStyle = { imageRendering: "pixelated" as const };
 
   return (
     <div className="fixed inset-0 -z-50 pointer-events-none overflow-hidden bg-sky">
-      {/* Layer 1: Sky Base (z-0) - Static */}
+      {/* Layer 1: Base Background (z-0) - Static */}
       <Image
-        src="/bg/1.png"
-        alt="Sky background"
+        src={`${config.path}/1.png`}
+        alt={config.layerAlts[0]}
         fill
         priority
         className={`${commonImageStyles} z-0`}
         style={pixelatedStyle}
       />
 
-      {/* Layer 2: Airplane - Animated */}
-      <div
-        className={`absolute z-10 w-[80vw] h-[40vw] ${isFlying ? "animate-fly-across" : "opacity-0"}`}
-        style={{
-          top: 0,
-          left: 0,
-          ...pixelatedStyle,
-        }}
-        onAnimationEnd={handleAnimationEnd}
-      >
-        <Image
-          src="/bg/2.png"
-          alt="Airplane"
-          fill
-          className="object-contain"
+      {/* Layer 2: Theme-specific animated layer */}
+      {config.hasAirplaneAnimation ? (
+        // Pink theme: Airplane with fly animation
+        <div
+          className={`absolute z-10 w-[80vw] h-[40vw] ${isFlying ? "animate-fly-across" : "opacity-0"}`}
           style={{
+            top: 0,
+            left: 0,
             ...pixelatedStyle,
           }}
+          onAnimationEnd={handleAnimationEnd}
+        >
+          <Image
+            src={`${config.path}/2.png`}
+            alt={config.layerAlts[1]}
+            fill
+            className="object-contain"
+            style={pixelatedStyle}
+          />
+        </div>
+      ) : (
+        // Twilight theme: Stars with twinkling animation
+        <Image
+          src={`${config.path}/2.png`}
+          alt={config.layerAlts[1]}
+          fill
+          className={`${commonImageStyles} z-10 animate-twinkle`}
+          style={pixelatedStyle}
         />
-      </div>
+      )}
 
-      {/* Layer 3: Distant Clouds/Mountains (z-20) - Static */}
-      <Image src="/bg/3.png" alt="Distant clouds" fill className={`${commonImageStyles} z-20`} style={pixelatedStyle} />
-
-      {/* Layer 4: Mid-ground Clouds (z-30) - Static */}
+      {/* Layer 3: Cloud layer 1 (z-20) - Static */}
       <Image
-        src="/bg/4.png"
-        alt="Mid-ground clouds"
+        src={`${config.path}/3.png`}
+        alt={config.layerAlts[2]}
+        fill
+        className={`${commonImageStyles} z-20`}
+        style={pixelatedStyle}
+      />
+
+      {/* Layer 4: Cloud layer 2 (z-30) - Static */}
+      <Image
+        src={`${config.path}/4.png`}
+        alt={config.layerAlts[3]}
         fill
         className={`${commonImageStyles} z-30`}
         style={pixelatedStyle}
       />
 
-      {/* Layer 5: Foreground Details (z-40) - Static */}
-      <Image
-        src="/bg/5.png"
-        alt="Foreground clouds"
-        fill
-        className={`${commonImageStyles} z-40`}
-        style={pixelatedStyle}
-      />
+      {/* Layer 5: Foreground (z-40) - Only for Pink theme */}
+      {config.layerCount >= 5 && (
+        <Image
+          src={`${config.path}/5.png`}
+          alt={config.layerAlts[4]}
+          fill
+          className={`${commonImageStyles} z-40`}
+          style={pixelatedStyle}
+        />
+      )}
     </div>
   );
 }

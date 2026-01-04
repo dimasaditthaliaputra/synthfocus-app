@@ -59,44 +59,188 @@
   --color-antique-white-800: #633003;
   --color-antique-white-900: #321801;
   --color-antique-white-950: #231101;
+
+  /* ============================================
+     TWILIGHT THEME PALETTES
+     ============================================ */
+
+  /* Petal Pink Palette */
+  --color-petal-pink-50: #f9ebf4;
+  --color-petal-pink-100: #f4d7e9;
+  --color-petal-pink-200: #e8b0d3;
+  --color-petal-pink-300: #dd88bc;
+  --color-petal-pink-400: #d161a6;
+  --color-petal-pink-500: #c63990;
+  --color-petal-pink-600: #9e2e73;
+  --color-petal-pink-700: #772256;
+  --color-petal-pink-800: #4f173a;
+  --color-petal-pink-900: #280b1d;
+  --color-petal-pink-950: #1c0814;
+
+  /* Vintage Lavender Palette */
+  --color-vintage-lavender-50: #f4eff5;
+  --color-vintage-lavender-100: #e9dfec;
+  --color-vintage-lavender-200: #d3bfd9;
+  --color-vintage-lavender-300: #bd9fc6;
+  --color-vintage-lavender-400: #a780b3;
+  --color-vintage-lavender-500: #91609f;
+  --color-vintage-lavender-600: #744d80;
+  --color-vintage-lavender-700: #573960;
+  --color-vintage-lavender-800: #3a2640;
+  --color-vintage-lavender-900: #1d1320;
+  --color-vintage-lavender-950: #140d16;
+
+  /* Dusty Grape Palette */
+  --color-dusty-grape-50: #f0eef6;
+  --color-dusty-grape-100: #e2deed;
+  --color-dusty-grape-200: #c5bddb;
+  --color-dusty-grape-300: #a89cc9;
+  --color-dusty-grape-400: #8b7ab8;
+  --color-dusty-grape-500: #6e59a6;
+  --color-dusty-grape-600: #584785;
+  --color-dusty-grape-700: #423663;
+  --color-dusty-grape-800: #2c2442;
+  --color-dusty-grape-900: #161221;
+  --color-dusty-grape-950: #0f0c17;
+
+  /* Blue Bell Palette */
+  --color-blue-bell-50: #edf3f8;
+  --color-blue-bell-100: #dae7f1;
+  --color-blue-bell-200: #b6cfe2;
+  --color-blue-bell-300: #91b7d4;
+  --color-blue-bell-400: #6c9fc6;
+  --color-blue-bell-500: #4787b8;
+  --color-blue-bell-600: #396c93;
+  --color-blue-bell-700: #2b516e;
+  --color-blue-bell-800: #1d3649;
+  --color-blue-bell-900: #0e1b25;
+  --color-blue-bell-950: #0a131a;
+
+  /* Sky Reflection Palette */
+  --color-sky-reflection-50: #edf4f8;
+  --color-sky-reflection-100: #dbe9f0;
+  --color-sky-reflection-200: #b6d3e2;
+  --color-sky-reflection-300: #92bdd3;
+  --color-sky-reflection-400: #6da8c5;
+  --color-sky-reflection-500: #4992b6;
+  --color-sky-reflection-600: #3a7592;
+  --color-sky-reflection-700: #2c576d;
+  --color-sky-reflection-800: #1d3a49;
+  --color-sky-reflection-900: #0f1d24;
+  --color-sky-reflection-950: #0a141a;
 }
 
 @theme inline {
-  /* === THE SKY (Backgrounds) - Based on Blush Rose === */
-  --color-sky: #ea7ba4;
-  --color-sky-light: #f1a7c2;
-  --color-sky-dark: #af1d52;
+  /* === THE SKY (Backgrounds) === */
+  --color-sky: var(--theme-sky, #ea7ba4);
+  --color-sky-light: var(--theme-sky-light, #f1a7c2);
+  --color-sky-dark: var(--theme-sky-dark, #af1d52);
 
-  /* === THE CLOUDS (Cards & Panels) - Based on Antique White === */
-  --color-cloud-white: #fef1e6;
-  --color-cloud-cream: #fee4cd;
-  --color-cloud-shadow: #c76005;
+  /* === THE CLOUDS (Cards & Panels) === */
+  --color-cloud-white: var(--theme-cloud-white, #fef1e6);
+  --color-cloud-cream: var(--theme-cloud-cream, #fee4cd);
+  --color-cloud-shadow: var(--theme-cloud-shadow, #c76005);
 
-  /* === TEXT & BORDERS - High Contrast === */
-  --color-ink: #320109;
-  --color-ink-dim: #650112;
-  --color-ink-border: #230006;
+  /* === TEXT & BORDERS === */
+  --color-ink: var(--theme-ink, #320109);
+  --color-ink-dim: var(--theme-ink-dim, #650112);
+  --color-ink-border: var(--theme-ink-border, #230006);
 
   /* === ACCENTS (Buttons & Tags) === */
-  --color-pop-pink: #ff0055;
-  --color-pop-rose: #db2467;
-  --color-pop-gold: #f97706;
-  --color-pop-danger: #fc032c;
+  --color-pop-pink: var(--theme-pop-pink, #ff0055);
+  --color-pop-rose: var(--theme-pop-rose, #db2467);
+  --color-pop-gold: var(--theme-pop-gold, #f97706);
+  --color-pop-danger: var(--theme-pop-danger, #fc032c);
 
   /* === CATEGORY COLORS === */
-  --color-cat-work: #ff0055;
-  --color-cat-college: #db2467;
-  --color-cat-coding: #f97706;
-  --color-cat-other: #af1d52;
+  --color-cat-work: var(--theme-cat-work, #ff0055);
+  --color-cat-college: var(--theme-cat-college, #db2467);
+  --color-cat-coding: var(--theme-cat-coding, #f97706);
+  --color-cat-other: var(--theme-cat-other, #af1d52);
 
   /* Fonts */
   --font-pixel: "Press Start 2P", cursive;
   --font-terminal: "VT323", monospace;
 
-  /* Pixel Shadows - Updated for dreamy theme */
-  --shadow-pixel: 4px 4px 0px 0px var(--color-ink-border);
-  --shadow-pixel-sm: 2px 2px 0px 0px var(--color-ink-border);
-  --shadow-pixel-primary: 4px 4px 0px 0px var(--color-pop-pink);
+  /* Pixel Shadows */
+  --shadow-pixel: 4px 4px 0px 0px var(--theme-ink-border, #230006);
+  --shadow-pixel-sm: 2px 2px 0px 0px var(--theme-ink-border, #230006);
+  --shadow-pixel-primary: 4px 4px 0px 0px var(--theme-pop-pink, #ff0055);
+}
+
+/* ============================================
+   THEME-SPECIFIC SEMANTIC VARIABLES
+   ============================================ */
+
+/* PINK THEME (Default) */
+:root,
+:root[data-theme="pink"] {
+  /* Semantic Variables */
+  --synth-bg: var(--color-blush-rose-300);
+  --synth-panel: var(--color-antique-white-50);
+  --synth-text: var(--color-cotton-candy-900);
+  --synth-border: var(--color-cotton-candy-950);
+  --synth-accent: var(--color-bubblegum-tint-500);
+  --synth-shadow: var(--color-cotton-candy-950);
+
+  /* Theme Variables for @theme inline */
+  --theme-sky: #ea7ba4;
+  --theme-sky-light: #f1a7c2;
+  --theme-sky-dark: #af1d52;
+
+  --theme-cloud-white: #fef1e6;
+  --theme-cloud-cream: #fee4cd;
+  --theme-cloud-shadow: #c76005;
+
+  --theme-ink: #320109;
+  --theme-ink-dim: #650112;
+  --theme-ink-border: #230006;
+
+  --theme-pop-pink: #ff0055;
+  --theme-pop-rose: #db2467;
+  --theme-pop-gold: #f97706;
+  --theme-pop-danger: #fc032c;
+
+  --theme-cat-work: #ff0055;
+  --theme-cat-college: #db2467;
+  --theme-cat-coding: #f97706;
+  --theme-cat-other: #af1d52;
+}
+
+/* TWILIGHT THEME - High Contrast Purple/Blue Palette */
+:root[data-theme="twilight"] {
+  /* Semantic Variables */
+  --synth-bg: var(--color-blue-bell-300);
+  --synth-panel: var(--color-vintage-lavender-100);
+  --synth-text: var(--color-vintage-lavender-900);
+  --synth-text-secondary: var(--color-vintage-lavender-800);
+  --synth-border: var(--color-blue-bell-950);
+  --synth-accent: var(--color-dusty-grape-500);
+  --synth-accent-secondary: var(--color-petal-pink-500);
+  --synth-shadow: var(--color-vintage-lavender-800);
+
+  /* Theme Variables for @theme inline - Twilight Overrides */
+  --theme-sky: #91b7d4; /* blue-bell-300 */
+  --theme-sky-light: #b6cfe2; /* blue-bell-200 */
+  --theme-sky-dark: #2b516e; /* blue-bell-700 */
+
+  --theme-cloud-white: #f4eff5; /* vintage-lavender-50 */
+  --theme-cloud-cream: #e9dfec; /* vintage-lavender-100 */
+  --theme-cloud-shadow: #584785; /* dusty-grape-600 */
+
+  --theme-ink: #1d1320; /* vintage-lavender-900 */
+  --theme-ink-dim: #573960; /* vintage-lavender-700 */
+  --theme-ink-border: #0a131a; /* blue-bell-950 */
+
+  --theme-pop-pink: #6e59a6; /* dusty-grape-500 */
+  --theme-pop-rose: #584785; /* dusty-grape-600 */
+  --theme-pop-gold: #c63990; /* petal-pink-500 */
+  --theme-pop-danger: #9e2e73; /* petal-pink-600 */
+
+  --theme-cat-work: #6e59a6; /* dusty-grape-500 */
+  --theme-cat-college: #c63990; /* petal-pink-500 */
+  --theme-cat-coding: #4787b8; /* blue-bell-500 */
+  --theme-cat-other: #744d80; /* vintage-lavender-600 */
 }
 
 /* Base Styles */
@@ -206,11 +350,11 @@ body {
    =================================== */
 @keyframes flyAcross {
   0% {
-    transform: translate(-250px, 60vh);
+    transform: translate(-250px, 25vh);
     opacity: 1;
   }
   100% {
-    transform: translate(110vw, -20vh);
+    transform: translate(110vw, -30vh);
     opacity: 1;
   }
 }
@@ -330,4 +474,69 @@ body {
 
 .animate-pixel-popup {
   animation: pixelPopup 0.4s steps(8) forwards;
+}
+
+/* ===================================
+   THEME TRANSITION - SCREEN WIPE
+   =================================== */
+@keyframes screenWipeIn {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+@keyframes screenWipeOut {
+  0% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.screen-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(
+    180deg,
+    var(--color-ink-border) 0%,
+    var(--color-ink-border) 50%,
+    var(--synth-bg) 50%,
+    var(--synth-bg) 100%
+  );
+  background-size: 100% 8px;
+  pointer-events: none;
+}
+
+.screen-wipe-in {
+  animation: screenWipeIn 0.3s steps(6) forwards;
+}
+
+.screen-wipe-out {
+  animation: screenWipeOut 0.3s steps(6) forwards;
+}
+
+/* ===================================
+   STARS TWINKLING ANIMATION (Twilight)
+   =================================== */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-twinkle {
+  animation: twinkle 2s steps(4) infinite;
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSchedule } from "@/hooks/useSchedule";
-import { PixelCard, PixelButton, PixelTextarea, ScheduleItemCard, PixelBackground } from "@/components";
+import { PixelCard, PixelButton, PixelTextarea, ScheduleItemCard, PixelBackground, ThemeSwitcher } from "@/components";
 import { ScheduleItem } from "@/types";
 import { Sparkles, Trash2, Plus, Loader2, Terminal, Cloud } from "lucide-react";
 import { EditModal } from "./EditModal";
@@ -73,7 +73,7 @@ export default function Home() {
           <header className="text-center mb-8">
             <div className="flex items-center justify-center gap-4 mb-4">
               <Cloud size={40} className="text-cloud-white" strokeWidth={2.5} />
-              <h1 className="font-pixel text-2xl md:text-4xl text-cloud-white tracking-wider drop-shadow-[2px_2px_0px_#230006]">
+              <h1 className="font-pixel text-xl md:text-4xl text-cloud-white tracking-wider drop-shadow-[2px_2px_0px_#230006]">
                 {"SYNTHFOCUS".split("").map((char, i) => (
                   <span key={i} className="animate-pixel-bounce" style={{ animationDelay: `${i * 0.1}s` }}>
                     {char}
@@ -133,7 +133,7 @@ export default function Home() {
           {/* Schedule List Header */}
           <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <h2 className="font-pixel text-md md:text-sm text-cloud-white uppercase tracking-wider drop-shadow-[2px_2px_0px_#230006]">
+              <h2 className="font-pixel text-sm md:text-md text-cloud-white uppercase tracking-wider drop-shadow-[2px_2px_0px_#230006]">
                 {["Quest", "Log!"].map((word, i) => (
                   <span key={i} className="animate-word-bounce mr-2" style={{ animationDelay: `${i * 0.1}s` }}>
                     {word}
@@ -197,6 +197,9 @@ export default function Home() {
         {/* Add Manual Modal */}
         {isAddModalOpen && <AddManualModal onSave={handleAddManual} onClose={() => setIsAddModalOpen(false)} />}
       </main>
+
+      {/* Theme Switcher */}
+      <ThemeSwitcher />
     </>
   );
 }
