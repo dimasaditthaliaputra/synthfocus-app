@@ -127,7 +127,7 @@ export default function Home() {
           {/* Schedule List Header */}
           <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <h2 className="font-pixel text-sm text-ink uppercase tracking-wider">Quest Log</h2>
+              <h2 className="font-pixel text-md md:text-sm text-cloud-white uppercase tracking-wider drop-shadow-[2px_2px_0px_#230006] animate-bounce">Quest Log</h2>
               {schedule.length > 0 && (
                 <div className="flex gap-3 font-terminal text-lg">
                   <span className="text-pop-gold">{pendingCount} pending</span>

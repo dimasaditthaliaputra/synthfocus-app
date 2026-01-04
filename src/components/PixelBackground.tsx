@@ -62,9 +62,10 @@ export function PixelBackground() {
 
       {/* Layer 2: Airplane - Animated */}
       <div
-        className={`absolute z-10 w-[200px] h-[100px] ${isFlying ? "animate-fly-across" : "opacity-0"}`}
+        className={`absolute z-10 w-[80vw] h-[40vw] ${isFlying ? "animate-fly-across" : "opacity-0"}`}
         style={{
-          top: `${topPosition}%`,
+          top: 0,
+          left: 0,
           ...pixelatedStyle,
         }}
         onAnimationEnd={handleAnimationEnd}
