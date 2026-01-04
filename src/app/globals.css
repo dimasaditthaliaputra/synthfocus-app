@@ -218,3 +218,88 @@ body {
 .animate-fly-across {
   animation: flyAcross 12s linear forwards;
 }
+
+/* ===================================
+   RETRO PIXEL TEXT ANIMATIONS
+   =================================== */
+
+/* Chunky Arcade-Style Bounce - Per Character */
+@keyframes pixelBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-8px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-pixel-bounce {
+  display: inline-block;
+  animation: pixelBounce 1.2s steps(4) infinite;
+}
+
+/* Word Bounce - Slower, Chill */
+@keyframes wordBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-word-bounce {
+  display: inline-block;
+  animation: wordBounce 1.5s steps(3) infinite;
+}
+
+/* Retro Terminal Typing Animation */
+@keyframes retroType {
+  /* Type in */
+  0% {
+    width: 0;
+  }
+  35% {
+    width: 15ch;
+  }
+  /* Pause with full text */
+  50% {
+    width: 15ch;
+  }
+  /* Delete character by character */
+  85% {
+    width: 0;
+  }
+  /* Pause before restart */
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes retroCursor {
+  0%,
+  49% {
+    border-right-color: var(--color-pop-pink);
+  }
+  50%,
+  100% {
+    border-right-color: transparent;
+  }
+}
+
+.animate-retro-typing {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  border-right: 3px solid var(--color-pop-pink);
+  animation: retroType 5s steps(15) infinite, retroCursor 0.6s steps(1) infinite;
+}

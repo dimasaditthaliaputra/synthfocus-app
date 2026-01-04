@@ -74,7 +74,11 @@ export default function Home() {
             <div className="flex items-center justify-center gap-4 mb-4">
               <Cloud size={40} className="text-cloud-white" strokeWidth={2.5} />
               <h1 className="font-pixel text-2xl md:text-4xl text-cloud-white tracking-wider drop-shadow-[2px_2px_0px_#230006]">
-                SYNTHFOCUS
+                {"SYNTHFOCUS".split("").map((char, i) => (
+                  <span key={i} className="animate-pixel-bounce" style={{ animationDelay: `${i * 0.1}s` }}>
+                    {char}
+                  </span>
+                ))}
               </h1>
               <Cloud size={40} className="text-cloud-white transform scale-x-[-1]" strokeWidth={2.5} />
             </div>
@@ -85,7 +89,7 @@ export default function Home() {
           <PixelCard className="mb-8 p-4 md:p-6">
             <div className="flex items-center gap-3 mb-4">
               <Terminal size={20} className="text-pop-pink" strokeWidth={3} />
-              <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider">Command Center</h2>
+              <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider animate-retro-typing">Command Center</h2>
             </div>
 
             <PixelTextarea
@@ -127,7 +131,13 @@ export default function Home() {
           {/* Schedule List Header */}
           <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <h2 className="font-pixel text-md md:text-sm text-cloud-white uppercase tracking-wider drop-shadow-[2px_2px_0px_#230006] animate-bounce">Quest Log</h2>
+              <h2 className="font-pixel text-md md:text-sm text-cloud-white uppercase tracking-wider drop-shadow-[2px_2px_0px_#230006]">
+                {["Quest", "Log!"].map((word, i) => (
+                  <span key={i} className="animate-word-bounce mr-2" style={{ animationDelay: `${i * 0.1}s` }}>
+                    {word}
+                  </span>
+                ))}
+              </h2>
               {schedule.length > 0 && (
                 <div className="flex gap-3 font-terminal text-lg">
                   <span className="text-pop-gold">{pendingCount} pending</span>
