@@ -1,9 +1,28 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { ScheduleItem } from "@/types";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { ScheduleItem, DayOfWeek } from "@/types";
 
-const STORAGE_KEY = "synthfocus_schedule";
+const STORAGE_KEY = "synthfocus_timetable";
+
+// Day names for display
+export const DAY_NAMES: Record<DayOfWeek, string> = {
+  sun: "SUN",
+  mon: "MON",
+  tue: "TUE",
+  wed: "WED",
+  thu: "THU",
+  fri: "FRI",
+  sat: "SAT",
+};
+
+export const DAYS_ORDER: DayOfWeek[] = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+
+// Get current day of week
+export function getCurrentDayOfWeek(): DayOfWeek {
+  const dayIndex = new Date().getDay();
+  return DAYS_ORDER[dayIndex];
+}
 
 export function useSchedule() {
   const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
@@ -16,11 +35,17 @@ export function useSchedule() {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          setSchedule(parsed);
+          // Validate items have dayOfWeek field
+          const validItems = parsed.filter(
+            (item: ScheduleItem) => item.dayOfWeek && DAYS_ORDER.includes(item.dayOfWeek)
+          );
+          setSchedule(validItems);
         }
       }
     } catch (error) {
-      console.error("Failed to load schedule from localStorage:", error);
+      console.error("Failed to load timetable from localStorage:", error);
+      // Clear corrupted data
+      localStorage.removeItem(STORAGE_KEY);
     }
     setIsHydrated(true);
   }, []);
@@ -31,7 +56,7 @@ export function useSchedule() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(schedule));
       } catch (error) {
-        console.error("Failed to save schedule to localStorage:", error);
+        console.error("Failed to save timetable to localStorage:", error);
       }
     }
   }, [schedule, isHydrated]);
@@ -62,16 +87,51 @@ export function useSchedule() {
     setSchedule([]);
   }, []);
 
+  const clearScheduleByDay = useCallback((day: DayOfWeek) => {
+    setSchedule((prev) => prev.filter((item) => item.dayOfWeek !== day));
+  }, []);
+
   const replaceSchedule = useCallback((items: ScheduleItem[]) => {
     setSchedule(items);
   }, []);
 
-  // Sort schedule by time
-  const sortedSchedule = [...schedule].sort((a, b) => {
-    const timeA = a.time.replace(/[^0-9:]/g, "");
-    const timeB = b.time.replace(/[^0-9:]/g, "");
-    return timeA.localeCompare(timeB);
-  });
+  // Get tasks for a specific day of week
+  const getTasksByDay = useCallback(
+    (day: DayOfWeek): ScheduleItem[] => {
+      return schedule
+        .filter((item) => item.dayOfWeek === day)
+        .sort((a, b) => {
+          const timeA = a.time.replace(/[^0-9:]/g, "");
+          const timeB = b.time.replace(/[^0-9:]/g, "");
+          return timeA.localeCompare(timeB);
+        });
+    },
+    [schedule]
+  );
+
+  // Get task count for a specific day (for indicators)
+  const getTaskCountByDay = useCallback(
+    (day: DayOfWeek): { total: number; pending: number; done: number } => {
+      const tasks = schedule.filter((item) => item.dayOfWeek === day);
+      return {
+        total: tasks.length,
+        pending: tasks.filter((t) => t.status === "pending").length,
+        done: tasks.filter((t) => t.status === "done").length,
+      };
+    },
+    [schedule]
+  );
+
+  // Sort schedule by day then time
+  const sortedSchedule = useMemo(() => {
+    return [...schedule].sort((a, b) => {
+      const dayCompare = DAYS_ORDER.indexOf(a.dayOfWeek) - DAYS_ORDER.indexOf(b.dayOfWeek);
+      if (dayCompare !== 0) return dayCompare;
+      const timeA = a.time.replace(/[^0-9:]/g, "");
+      const timeB = b.time.replace(/[^0-9:]/g, "");
+      return timeA.localeCompare(timeB);
+    });
+  }, [schedule]);
 
   return {
     schedule: sortedSchedule,
@@ -82,6 +142,9 @@ export function useSchedule() {
     deleteItem,
     toggleStatus,
     clearSchedule,
+    clearScheduleByDay,
     replaceSchedule,
+    getTasksByDay,
+    getTaskCountByDay,
   };
 }

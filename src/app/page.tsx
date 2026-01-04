@@ -1,22 +1,53 @@
 "use client";
 
-import { useState } from "react";
-import { useSchedule } from "@/hooks/useSchedule";
-import { PixelCard, PixelButton, PixelTextarea, ScheduleItemCard, PixelBackground, ThemeSwitcher } from "@/components";
-import { ScheduleItem } from "@/types";
+import { useState, useMemo, useEffect } from "react";
+import { useSchedule, getCurrentDayOfWeek, DAY_NAMES, DAYS_ORDER } from "@/hooks/useSchedule";
+import {
+  PixelCard,
+  PixelButton,
+  PixelTextarea,
+  ScheduleItemCard,
+  PixelBackground,
+  ThemeSwitcher,
+  WeeklyNav,
+} from "@/components";
+import { ScheduleItem, DayOfWeek } from "@/types";
 import { Sparkles, Trash2, Plus, Loader2, Terminal, Cloud } from "lucide-react";
 import { EditModal } from "./EditModal";
 import { AddManualModal } from "./AddManualModal";
 
 export default function Home() {
-  const { schedule, isHydrated, addItem, addItems, updateItem, deleteItem, toggleStatus, clearSchedule } =
-    useSchedule();
+  const {
+    isHydrated,
+    addItem,
+    addItems,
+    updateItem,
+    deleteItem,
+    toggleStatus,
+    clearScheduleByDay,
+    getTasksByDay,
+    getTaskCountByDay,
+  } = useSchedule();
 
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [editingItem, setEditingItem] = useState<ScheduleItem | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Selected day of week - initialized safely, then updated client-side
+  const [selectedDay, setSelectedDay] = useState<DayOfWeek>("sun");
+
+  // Set actual current day on client-side to respect user's timezone
+  useEffect(() => {
+    const currentDay = DAYS_ORDER[new Date().getDay()];
+    setSelectedDay(currentDay);
+  }, []);
+
+  // Get tasks for selected day
+  const tasksForSelectedDay = useMemo(() => {
+    return getTasksByDay(selectedDay);
+  }, [getTasksByDay, selectedDay]);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
@@ -28,7 +59,10 @@ export default function Home() {
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: prompt.trim() }),
+        body: JSON.stringify({
+          prompt: prompt.trim(),
+          targetDay: selectedDay,
+        }),
       });
 
       const data = await response.json();
@@ -51,9 +85,10 @@ export default function Home() {
     setEditingItem(null);
   };
 
-  const handleAddManual = (item: Omit<ScheduleItem, "id" | "status">) => {
+  const handleAddManual = (item: Omit<ScheduleItem, "id" | "status" | "dayOfWeek">) => {
     const newItem: ScheduleItem = {
       ...item,
+      dayOfWeek: selectedDay, // Attach selected day
       id: `task_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
       status: "pending",
     };
@@ -61,8 +96,8 @@ export default function Home() {
     setIsAddModalOpen(false);
   };
 
-  const pendingCount = schedule.filter((i) => i.status === "pending").length;
-  const doneCount = schedule.filter((i) => i.status === "done").length;
+  const pendingCount = tasksForSelectedDay.filter((i) => i.status === "pending").length;
+  const doneCount = tasksForSelectedDay.filter((i) => i.status === "done").length;
 
   return (
     <>
@@ -70,7 +105,7 @@ export default function Home() {
       <main className="min-h-screen p-4 md:p-8 relative z-10">
         <div className="max-w-3xl mx-auto">
           {/* Header */}
-          <header className="text-center mb-8">
+          <header className="text-center mb-6">
             <div className="flex items-center justify-center gap-4 mb-4">
               <Cloud size={40} className="text-cloud-white" strokeWidth={2.5} />
               <h1 className="font-pixel text-xl md:text-4xl text-cloud-white tracking-wider drop-shadow-[2px_2px_0px_#230006]">
@@ -82,24 +117,30 @@ export default function Home() {
               </h1>
               <Cloud size={40} className="text-cloud-white transform scale-x-[-1]" strokeWidth={2.5} />
             </div>
-            <p className="font-terminal text-xl text-ink">[ AI-POWERED DAILY SCHEDULER ]</p>
+            <p className="font-terminal text-xl text-ink">[ WEEKLY TIMETABLE ]</p>
           </header>
 
+          {/* Weekly Navigation - Static days, no dates */}
+          <WeeklyNav selectedDay={selectedDay} onChange={setSelectedDay} getTaskCount={getTaskCountByDay} />
+
           {/* AI Command Center */}
-          <PixelCard className="mb-8 p-4 md:p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Terminal size={20} className="text-pop-pink" strokeWidth={3} />
-              <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider animate-retro-typing">
-                Command Center
-              </h2>
+          <PixelCard className="mb-6 p-4 md:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <Terminal size={20} className="text-pop-pink" strokeWidth={3} />
+                <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider animate-retro-typing">
+                  Command Center
+                </h2>
+              </div>
+              <span className="font-terminal text-lg text-ink-dim">{DAY_NAMES[selectedDay]}</span>
             </div>
 
             <PixelTextarea
-              placeholder="Type your plan here... (e.g., 'morning class at 8, dicoding after lunch, work meeting at 3pm')"
+              placeholder={`Plan for ${DAY_NAMES[selectedDay]}... (e.g., 'morning class at 8, coding after lunch, gym at 5pm')`}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               disabled={isGenerating}
-              rows={4}
+              rows={3}
             />
 
             {error && (
@@ -140,15 +181,15 @@ export default function Home() {
                   </span>
                 ))}
               </h2>
-              {schedule.length > 0 && (
+              {tasksForSelectedDay.length > 0 && (
                 <div className="flex gap-3 font-terminal text-xl">
                   <span className="text-cloud-cream drop-shadow-[1px_1px_0px_#230006]">{pendingCount} pending</span>
                   <span className="text-cloud-white drop-shadow-[1px_1px_0px_#230006]">{doneCount} done</span>
                 </div>
               )}
             </div>
-            {schedule.length > 0 && (
-              <PixelButton variant="danger" size="sm" onClick={clearSchedule}>
+            {tasksForSelectedDay.length > 0 && (
+              <PixelButton variant="danger" size="sm" onClick={() => clearScheduleByDay(selectedDay)}>
                 <Trash2 size={14} className="mr-2" strokeWidth={3} />
                 CLEAR ALL
               </PixelButton>
@@ -163,17 +204,15 @@ export default function Home() {
                 <span className="font-terminal text-xl">Loading...</span>
               </div>
             </PixelCard>
-          ) : schedule.length === 0 ? (
+          ) : tasksForSelectedDay.length === 0 ? (
             <PixelCard className="p-8 text-center">
               <div className="text-6xl mb-4">☁️</div>
-              <p className="font-pixel text-xs text-ink-dim mb-2">NO QUESTS YET</p>
-              <p className="font-terminal text-xl text-ink-dim">
-                Type your daily plan above and let AI organize it for you!
-              </p>
+              <p className="font-pixel text-xs text-ink-dim mb-2">NO QUESTS FOR {DAY_NAMES[selectedDay]}</p>
+              <p className="font-terminal text-xl text-ink-dim">Type your plan above and let AI organize it for you!</p>
             </PixelCard>
           ) : (
-            <div className="space-y-4">
-              {schedule.map((item) => (
+            <div className="space-y-4 animate-fade-in" key={selectedDay}>
+              {tasksForSelectedDay.map((item) => (
                 <ScheduleItemCard
                   key={item.id}
                   item={item}
@@ -187,7 +226,7 @@ export default function Home() {
 
           {/* Footer */}
           <footer className="mt-12 text-center">
-            <p className="font-terminal text-lg text-ink-dim">SYNTHFOCUS v1.0 • Built with ☁️ and Pixels</p>
+            <p className="font-terminal text-lg text-ink-dim">SYNTHFOCUS v2.0 • Built with ☁️ and Pixels</p>
           </footer>
         </div>
 

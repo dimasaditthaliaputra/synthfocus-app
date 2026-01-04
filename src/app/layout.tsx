@@ -5,11 +5,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 export const metadata: Metadata = {
   title: "SYNTHFOCUS | Daily Scheduler",
   description: "A daily scheduler with AI-powered planning. Manage your work, college, and coding tasks.",
-  keywords: ["scheduler", "productivity", "pixel art", "retro", "AI planner"],
-  icons: {
-    icon: "/icon.png",
-    apple: "/icon.png",
-  },
+  keywords: ["scheduler", "productivity", "pixel art", "retro", "AI planner"]
 };
 
 export default function RootLayout({

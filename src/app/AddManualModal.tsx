@@ -6,7 +6,7 @@ import { PixelCard, PixelButton, PixelInput } from "@/components";
 import { X, Plus } from "lucide-react";
 
 interface AddManualModalProps {
-  onSave: (item: Omit<ScheduleItem, "id" | "status">) => void;
+  onSave: (item: Omit<ScheduleItem, "id" | "status" | "dayOfWeek">) => void;
   onClose: () => void;
 }
 

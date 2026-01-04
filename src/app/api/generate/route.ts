@@ -1,15 +1,18 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 
-const SYSTEM_PROMPT = `You are a schedule planner assistant for a productivity app called SYNTHFOCUS.
+const VALID_DAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
-Your task is to parse the user's natural language input describing their daily plans and convert it into a structured schedule.
+const SYSTEM_PROMPT = `You are a weekly timetable assistant for a productivity app called SYNTHFOCUS.
+
+Your task is to parse the user's natural language input and convert it into a structured recurring weekly schedule.
 
 STRICT RULES:
 1. Return ONLY a valid JSON array - no markdown, no explanation, no code blocks.
 2. Each item in the array must have this EXACT schema:
    {
      "id": "unique_string_id",
+     "dayOfWeek": "sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat",
      "time": "HH:MM" format (24-hour or with AM/PM),
      "activity": "description of the task",
      "category": "work" | "college" | "coding" | "other",
@@ -24,18 +27,39 @@ STRICT RULES:
 5. Generate unique IDs using format: "task_" + timestamp + random suffix
 6. Order tasks chronologically by time.
 
-Example input: "morning class at 8, then work on dicoding until lunch, afternoon meeting at 2pm"
-Example output:
-[{"id":"task_1704261600_a","time":"08:00","activity":"Morning class","category":"college","status":"pending"},{"id":"task_1704272400_b","time":"10:00","activity":"Work on Dicoding modules","category":"coding","status":"pending"},{"id":"task_1704279600_c","time":"12:00","activity":"Lunch break","category":"other","status":"pending"},{"id":"task_1704286800_d","time":"14:00","activity":"Afternoon meeting","category":"work","status":"pending"}]
+IMPORTANT RULES FOR DAYS:
+1. The user might provide a TARGET_DAY (the day they are currently viewing).
+2. IF the user's input is specific to that day (e.g., "plan for today", "my schedule for this day"), assign ALL tasks to TARGET_DAY.
+3. IF the user asks for a "Weekly Plan", "Whole Week", "Full Week", or mentions multiple days, YOU MUST generate tasks across MULTIPLE days (sun, mon, tue, wed, thu, fri, sat) regardless of TARGET_DAY.
+4. Output the specific "dayOfWeek" for each task based on context.
+5. If the user mentions specific days like "Monday meeting, Thursday gym", use those days.
+6. This is a RECURRING timetable - do NOT use specific calendar dates.
+
+Example 1 - Single Day Request:
+User says: "morning class at 8, then dicoding until lunch, meeting at 2pm"
+Target Day: mon
+Output: All tasks have "dayOfWeek": "mon"
+
+Example 2 - Weekly Plan Request:
+User says: "plan my week: gym on Monday and Wednesday, classes Tuesday/Thursday, weekend rest"
+Target Day: mon (ignored for weekly plan)
+Output: Tasks distributed across mon, wed, tue, thu, sat, sun with appropriate dayOfWeek values.
 
 IMPORTANT: Return ONLY the JSON array, nothing else.`;
 
 export async function POST(request: NextRequest) {
   try {
-    const { prompt } = await request.json();
+    const { prompt, targetDay } = await request.json();
 
     if (!prompt || typeof prompt !== "string") {
       return NextResponse.json({ error: "Invalid prompt provided" }, { status: 400 });
+    }
+
+    if (!targetDay || !VALID_DAYS.includes(targetDay)) {
+      return NextResponse.json(
+        { error: "Valid target day is required (sun, mon, tue, wed, thu, fri, sat)" },
+        { status: 400 }
+      );
     }
 
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
@@ -49,20 +73,22 @@ export async function POST(request: NextRequest) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini-flash-latest",
       generationConfig: {
         responseMimeType: "application/json",
         temperature: 0.3,
         topP: 0.8,
-        maxOutputTokens: 2048,
+        maxOutputTokens: 4096,
       },
     });
 
-    const fullPrompt = `${SYSTEM_PROMPT}\n\nUser input: "${prompt}"`;
+    const fullPrompt = `${SYSTEM_PROMPT}\n\nTARGET_DAY: ${targetDay}\n\nUser input: "${prompt}"`;
 
     const result = await model.generateContent(fullPrompt);
     const response = await result.response;
     const text = response.text().trim();
+
+    console.log("AI Response received:", text.substring(0, 500)); // Debug log
 
     // Clean up potential markdown code blocks
     let jsonText = text;
@@ -76,12 +102,15 @@ export async function POST(request: NextRequest) {
     }
     jsonText = jsonText.trim();
 
+    console.log("Cleaned JSON:", jsonText.substring(0, 500)); // Debug log
+
     // Parse and validate JSON
     let scheduleItems;
     try {
       scheduleItems = JSON.parse(jsonText);
-    } catch {
+    } catch (parseError) {
       console.error("Failed to parse AI response:", text);
+      console.error("Parse error:", parseError);
       return NextResponse.json(
         { error: "AI returned invalid JSON. Please try rephrasing your input." },
         { status: 422 }
@@ -93,10 +122,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "AI response was not an array. Please try again." }, { status: 422 });
     }
 
-    // Validate and sanitize each item
+    // Validate and sanitize each item - trust AI's dayOfWeek, fallback to targetDay
     const validCategories = ["work", "college", "coding", "other"];
     const validatedItems = scheduleItems.map((item, index) => ({
       id: item.id || `task_${Date.now()}_${index}`,
+      dayOfWeek: VALID_DAYS.includes(item.dayOfWeek) ? item.dayOfWeek : targetDay, // Trust AI first, fallback to targetDay
       time: String(item.time || "00:00"),
       activity: String(item.activity || "Untitled task"),
       category: validCategories.includes(item.category) ? item.category : "other",

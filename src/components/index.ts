@@ -6,3 +6,4 @@ export { CategoryTag } from "./CategoryTag";
 export { ScheduleItemCard } from "./ScheduleItemCard";
 export { PixelBackground } from "./PixelBackground";
 export { ThemeSwitcher } from "./ThemeSwitcher";
+export { WeeklyNav } from "./WeeklyNav";

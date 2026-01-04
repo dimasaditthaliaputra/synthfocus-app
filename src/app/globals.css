@@ -540,3 +540,21 @@ body {
 .animate-twinkle {
   animation: twinkle 2s steps(4) infinite;
 }
+
+/* ===================================
+   DAY SWITCH / FADE IN ANIMATION
+   =================================== */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s steps(6) forwards;
+}
