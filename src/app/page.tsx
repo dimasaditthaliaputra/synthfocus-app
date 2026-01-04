@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSchedule } from "@/hooks/useSchedule";
-import { PixelCard, PixelButton, PixelTextarea, ScheduleItemCard } from "@/components";
+import { PixelCard, PixelButton, PixelTextarea, ScheduleItemCard, PixelBackground } from "@/components";
 import { ScheduleItem } from "@/types";
 import { Sparkles, Trash2, Plus, Loader2, Terminal, Cloud } from "lucide-react";
 import { EditModal } from "./EditModal";
@@ -65,123 +65,126 @@ export default function Home() {
   const doneCount = schedule.filter((i) => i.status === "done").length;
 
   return (
-    <main className="min-h-screen bg-sky p-4 md:p-8">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <header className="text-center mb-8">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Cloud size={40} className="text-cloud-white" strokeWidth={2.5} />
-            <h1 className="font-pixel text-2xl md:text-4xl text-cloud-white tracking-wider drop-shadow-[2px_2px_0px_#230006]">
-              SYNTHFOCUS
-            </h1>
-            <Cloud size={40} className="text-cloud-white transform scale-x-[-1]" strokeWidth={2.5} />
-          </div>
-          <p className="font-terminal text-xl text-ink">[ AI-POWERED DAILY SCHEDULER ]</p>
-        </header>
-
-        {/* AI Command Center */}
-        <PixelCard className="mb-8 p-4 md:p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Terminal size={20} className="text-pop-pink" strokeWidth={3} />
-            <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider">Command Center</h2>
-          </div>
-
-          <PixelTextarea
-            placeholder="Type your plan here... (e.g., 'morning class at 8, dicoding after lunch, work meeting at 3pm')"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            disabled={isGenerating}
-            rows={4}
-          />
-
-          {error && (
-            <div className="mt-4 p-3 border-4 border-pop-danger bg-pop-danger/20 text-pop-danger font-terminal text-lg">
-              ⚠ {error}
+    <>
+      <PixelBackground />
+      <main className="min-h-screen p-4 md:p-8 relative z-10">
+        <div className="max-w-3xl mx-auto">
+          {/* Header */}
+          <header className="text-center mb-8">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <Cloud size={40} className="text-cloud-white" strokeWidth={2.5} />
+              <h1 className="font-pixel text-2xl md:text-4xl text-cloud-white tracking-wider drop-shadow-[2px_2px_0px_#230006]">
+                SYNTHFOCUS
+              </h1>
+              <Cloud size={40} className="text-cloud-white transform scale-x-[-1]" strokeWidth={2.5} />
             </div>
-          )}
+            <p className="font-terminal text-xl text-ink">[ AI-POWERED DAILY SCHEDULER ]</p>
+          </header>
 
-          <div className="flex flex-wrap gap-3 mt-4">
-            <PixelButton variant="primary" onClick={handleGenerate} disabled={isGenerating || !prompt.trim()}>
-              {isGenerating ? (
-                <>
-                  <Loader2 size={18} className="animate-spin mr-2" />
-                  GENERATING...
-                </>
-              ) : (
-                <>
-                  <Sparkles size={18} className="mr-2" strokeWidth={3} />
-                  GENERATE SCHEDULE
-                </>
-              )}
-            </PixelButton>
+          {/* AI Command Center */}
+          <PixelCard className="mb-8 p-4 md:p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Terminal size={20} className="text-pop-pink" strokeWidth={3} />
+              <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider">Command Center</h2>
+            </div>
 
-            <PixelButton variant="secondary" onClick={() => setIsAddModalOpen(true)}>
-              <Plus size={18} className="mr-2" strokeWidth={3} />
-              ADD MANUAL
-            </PixelButton>
-          </div>
-        </PixelCard>
+            <PixelTextarea
+              placeholder="Type your plan here... (e.g., 'morning class at 8, dicoding after lunch, work meeting at 3pm')"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              disabled={isGenerating}
+              rows={4}
+            />
 
-        {/* Schedule List Header */}
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <h2 className="font-pixel text-sm text-ink uppercase tracking-wider">Quest Log</h2>
-            {schedule.length > 0 && (
-              <div className="flex gap-3 font-terminal text-lg">
-                <span className="text-pop-gold">{pendingCount} pending</span>
-                <span className="text-emerald-600">{doneCount} done</span>
+            {error && (
+              <div className="mt-4 p-3 border-4 border-pop-danger bg-pop-danger/20 text-pop-danger font-terminal text-lg">
+                ⚠ {error}
               </div>
             )}
-          </div>
-          {schedule.length > 0 && (
-            <PixelButton variant="danger" size="sm" onClick={clearSchedule}>
-              <Trash2 size={14} className="mr-2" strokeWidth={3} />
-              CLEAR ALL
-            </PixelButton>
-          )}
-        </div>
 
-        {/* Schedule List */}
-        {!isHydrated ? (
-          <PixelCard className="p-8 text-center">
-            <div className="flex items-center justify-center gap-3 text-ink-dim">
-              <Loader2 size={24} className="animate-spin" />
-              <span className="font-terminal text-xl">Loading...</span>
+            <div className="flex flex-wrap gap-3 mt-4">
+              <PixelButton variant="primary" onClick={handleGenerate} disabled={isGenerating || !prompt.trim()}>
+                {isGenerating ? (
+                  <>
+                    <Loader2 size={18} className="animate-spin mr-2" />
+                    GENERATING...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={18} className="mr-2" strokeWidth={3} />
+                    GENERATE SCHEDULE
+                  </>
+                )}
+              </PixelButton>
+
+              <PixelButton variant="secondary" onClick={() => setIsAddModalOpen(true)}>
+                <Plus size={18} className="mr-2" strokeWidth={3} />
+                ADD MANUAL
+              </PixelButton>
             </div>
           </PixelCard>
-        ) : schedule.length === 0 ? (
-          <PixelCard className="p-8 text-center">
-            <div className="text-6xl mb-4">☁️</div>
-            <p className="font-pixel text-xs text-ink-dim mb-2">NO QUESTS YET</p>
-            <p className="font-terminal text-xl text-ink-dim">
-              Type your daily plan above and let AI organize it for you!
-            </p>
-          </PixelCard>
-        ) : (
-          <div className="space-y-4">
-            {schedule.map((item) => (
-              <ScheduleItemCard
-                key={item.id}
-                item={item}
-                onToggleStatus={toggleStatus}
-                onEdit={setEditingItem}
-                onDelete={deleteItem}
-              />
-            ))}
+
+          {/* Schedule List Header */}
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <h2 className="font-pixel text-sm text-ink uppercase tracking-wider">Quest Log</h2>
+              {schedule.length > 0 && (
+                <div className="flex gap-3 font-terminal text-lg">
+                  <span className="text-pop-gold">{pendingCount} pending</span>
+                  <span className="text-emerald-600">{doneCount} done</span>
+                </div>
+              )}
+            </div>
+            {schedule.length > 0 && (
+              <PixelButton variant="danger" size="sm" onClick={clearSchedule}>
+                <Trash2 size={14} className="mr-2" strokeWidth={3} />
+                CLEAR ALL
+              </PixelButton>
+            )}
           </div>
-        )}
 
-        {/* Footer */}
-        <footer className="mt-12 text-center">
-          <p className="font-terminal text-lg text-ink-dim">SYNTHFOCUS v1.0 • Built with ☁️ and Pixels</p>
-        </footer>
-      </div>
+          {/* Schedule List */}
+          {!isHydrated ? (
+            <PixelCard className="p-8 text-center">
+              <div className="flex items-center justify-center gap-3 text-ink-dim">
+                <Loader2 size={24} className="animate-spin" />
+                <span className="font-terminal text-xl">Loading...</span>
+              </div>
+            </PixelCard>
+          ) : schedule.length === 0 ? (
+            <PixelCard className="p-8 text-center">
+              <div className="text-6xl mb-4">☁️</div>
+              <p className="font-pixel text-xs text-ink-dim mb-2">NO QUESTS YET</p>
+              <p className="font-terminal text-xl text-ink-dim">
+                Type your daily plan above and let AI organize it for you!
+              </p>
+            </PixelCard>
+          ) : (
+            <div className="space-y-4">
+              {schedule.map((item) => (
+                <ScheduleItemCard
+                  key={item.id}
+                  item={item}
+                  onToggleStatus={toggleStatus}
+                  onEdit={setEditingItem}
+                  onDelete={deleteItem}
+                />
+              ))}
+            </div>
+          )}
 
-      {/* Edit Modal */}
-      {editingItem && <EditModal item={editingItem} onSave={handleEditSave} onClose={() => setEditingItem(null)} />}
+          {/* Footer */}
+          <footer className="mt-12 text-center">
+            <p className="font-terminal text-lg text-ink-dim">SYNTHFOCUS v1.0 • Built with ☁️ and Pixels</p>
+          </footer>
+        </div>
 
-      {/* Add Manual Modal */}
-      {isAddModalOpen && <AddManualModal onSave={handleAddManual} onClose={() => setIsAddModalOpen(false)} />}
-    </main>
+        {/* Edit Modal */}
+        {editingItem && <EditModal item={editingItem} onSave={handleEditSave} onClose={() => setEditingItem(null)} />}
+
+        {/* Add Manual Modal */}
+        {isAddModalOpen && <AddManualModal onSave={handleAddManual} onClose={() => setIsAddModalOpen(false)} />}
+      </main>
+    </>
   );
 }

@@ -4,3 +4,4 @@ export { PixelInput } from "./PixelInput";
 export { PixelTextarea } from "./PixelTextarea";
 export { CategoryTag } from "./CategoryTag";
 export { ScheduleItemCard } from "./ScheduleItemCard";
+export { PixelBackground } from "./PixelBackground";

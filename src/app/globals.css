@@ -200,3 +200,21 @@ body {
   background: var(--color-pop-pink);
   color: var(--color-cloud-white);
 }
+
+/* ===================================
+   AIRPLANE FLIGHT ANIMATION
+   =================================== */
+@keyframes flyAcross {
+  0% {
+    transform: translateX(-20vw) rotate(-10deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120vw) rotate(-10deg);
+    opacity: 1;
+  }
+}
+
+.animate-fly-across {
+  animation: flyAcross 15s linear forwards;
+}
