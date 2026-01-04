@@ -10,23 +10,23 @@ interface CategoryTagProps {
 const categoryConfig: Record<Category, { label: string; color: string; bg: string }> = {
   work: {
     label: "WORK",
-    color: "text-sf-cat-work",
-    bg: "bg-sf-cat-work/20",
+    color: "text-pop-pink",
+    bg: "bg-pop-pink/20",
   },
   college: {
     label: "COLLEGE",
-    color: "text-sf-cat-college",
-    bg: "bg-sf-cat-college/20",
+    color: "text-pop-rose",
+    bg: "bg-pop-rose/20",
   },
   coding: {
     label: "CODING",
-    color: "text-sf-cat-coding",
-    bg: "bg-sf-cat-coding/20",
+    color: "text-pop-gold",
+    bg: "bg-pop-gold/20",
   },
   other: {
     label: "OTHER",
-    color: "text-sf-cat-other",
-    bg: "bg-sf-cat-other/20",
+    color: "text-sky-dark",
+    bg: "bg-sky-dark/20",
   },
 };
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSchedule } from "@/hooks/useSchedule";
 import { PixelCard, PixelButton, PixelTextarea, ScheduleItemCard } from "@/components";
 import { ScheduleItem } from "@/types";
-import { Sparkles, Trash2, Plus, Loader2, Terminal, Gamepad2 } from "lucide-react";
+import { Sparkles, Trash2, Plus, Loader2, Terminal, Cloud } from "lucide-react";
 import { EditModal } from "./EditModal";
 import { AddManualModal } from "./AddManualModal";
 
@@ -65,23 +65,25 @@ export default function Home() {
   const doneCount = schedule.filter((i) => i.status === "done").length;
 
   return (
-    <main className="min-h-screen bg-sf-bg p-4 md:p-8">
+    <main className="min-h-screen bg-sky p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <header className="text-center mb-8">
           <div className="flex items-center justify-center gap-4 mb-4">
-            <Gamepad2 size={40} className="text-sf-primary" strokeWidth={2.5} />
-            <h1 className="font-pixel text-2xl md:text-4xl text-sf-primary tracking-wider">SYNTHFOCUS</h1>
-            <Gamepad2 size={40} className="text-sf-primary transform scale-x-[-1]" strokeWidth={2.5} />
+            <Cloud size={40} className="text-cloud-white" strokeWidth={2.5} />
+            <h1 className="font-pixel text-2xl md:text-4xl text-cloud-white tracking-wider drop-shadow-[2px_2px_0px_#230006]">
+              SYNTHFOCUS
+            </h1>
+            <Cloud size={40} className="text-cloud-white transform scale-x-[-1]" strokeWidth={2.5} />
           </div>
-          <p className="font-terminal text-xl text-sf-text-muted">[ AI-POWERED DAILY SCHEDULER ]</p>
+          <p className="font-terminal text-xl text-ink">[ AI-POWERED DAILY SCHEDULER ]</p>
         </header>
 
         {/* AI Command Center */}
         <PixelCard className="mb-8 p-4 md:p-6">
           <div className="flex items-center gap-3 mb-4">
-            <Terminal size={20} className="text-sf-success" strokeWidth={3} />
-            <h2 className="font-pixel text-xs text-sf-success uppercase tracking-wider">Command Center</h2>
+            <Terminal size={20} className="text-pop-pink" strokeWidth={3} />
+            <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider">Command Center</h2>
           </div>
 
           <PixelTextarea
@@ -93,7 +95,7 @@ export default function Home() {
           />
 
           {error && (
-            <div className="mt-4 p-3 border-4 border-red-500 bg-red-500/20 text-red-400 font-terminal text-lg">
+            <div className="mt-4 p-3 border-4 border-pop-danger bg-pop-danger/20 text-pop-danger font-terminal text-lg">
               ⚠ {error}
             </div>
           )}
@@ -123,11 +125,11 @@ export default function Home() {
         {/* Schedule List Header */}
         <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
           <div className="flex items-center gap-4">
-            <h2 className="font-pixel text-sm text-sf-text uppercase tracking-wider">Quest Log</h2>
+            <h2 className="font-pixel text-sm text-ink uppercase tracking-wider">Quest Log</h2>
             {schedule.length > 0 && (
               <div className="flex gap-3 font-terminal text-lg">
-                <span className="text-sf-warning">{pendingCount} pending</span>
-                <span className="text-sf-success">{doneCount} done</span>
+                <span className="text-pop-gold">{pendingCount} pending</span>
+                <span className="text-emerald-600">{doneCount} done</span>
               </div>
             )}
           </div>
@@ -142,16 +144,16 @@ export default function Home() {
         {/* Schedule List */}
         {!isHydrated ? (
           <PixelCard className="p-8 text-center">
-            <div className="flex items-center justify-center gap-3 text-sf-text-muted">
+            <div className="flex items-center justify-center gap-3 text-ink-dim">
               <Loader2 size={24} className="animate-spin" />
               <span className="font-terminal text-xl">Loading...</span>
             </div>
           </PixelCard>
         ) : schedule.length === 0 ? (
           <PixelCard className="p-8 text-center">
-            <div className="text-6xl mb-4">📋</div>
-            <p className="font-pixel text-xs text-sf-text-muted mb-2">NO QUESTS YET</p>
-            <p className="font-terminal text-xl text-sf-text-muted">
+            <div className="text-6xl mb-4">☁️</div>
+            <p className="font-pixel text-xs text-ink-dim mb-2">NO QUESTS YET</p>
+            <p className="font-terminal text-xl text-ink-dim">
               Type your daily plan above and let AI organize it for you!
             </p>
           </PixelCard>
@@ -171,7 +173,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-12 text-center">
-          <p className="font-terminal text-lg text-sf-text-muted">SYNTHFOCUS v1.0 • Built with 💜 and Pixels</p>
+          <p className="font-terminal text-lg text-ink-dim">SYNTHFOCUS v1.0 • Built with ☁️ and Pixels</p>
         </footer>
       </div>
 

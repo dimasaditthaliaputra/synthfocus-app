@@ -3,54 +3,100 @@
 
 @import "tailwindcss";
 
-/* Synthfocus Theme Variables */
-:root {
-  --sf-bg: #1a1a2e;
-  --sf-bg-dark: #0f0f1a;
-  --sf-panel: #16213e;
-  --sf-panel-light: #1f2b47;
-  --sf-accent: #0f3460;
-  --sf-primary: #e94560;
-  --sf-primary-hover: #ff6b8a;
-  --sf-text: #eee;
-  --sf-text-muted: #aaa;
-  --sf-border: #000;
-  --sf-success: #00ff88;
-  --sf-warning: #ffaa00;
+/* ============================================
+   DREAMY CLOUD THEME - Pixel Art Color Palette
+   ============================================ */
 
-  /* Category Colors */
-  --sf-cat-work: #00ffff;
-  --sf-cat-college: #ff00ff;
-  --sf-cat-coding: #ffff00;
-  --sf-cat-other: #888888;
+:root {
+  /* Cotton Candy Palette */
+  --color-cotton-candy-50: #ffe6ea;
+  --color-cotton-candy-100: #fecdd5;
+  --color-cotton-candy-200: #fe9aab;
+  --color-cotton-candy-300: #fd6881;
+  --color-cotton-candy-400: #fd3556;
+  --color-cotton-candy-500: #fc032c;
+  --color-cotton-candy-600: #ca0223;
+  --color-cotton-candy-700: #97021b;
+  --color-cotton-candy-800: #650112;
+  --color-cotton-candy-900: #320109;
+  --color-cotton-candy-950: #230006;
+
+  /* Bubblegum Tint Palette */
+  --color-bubblegum-tint-50: #ffe5ee;
+  --color-bubblegum-tint-100: #ffccdd;
+  --color-bubblegum-tint-200: #ff99bb;
+  --color-bubblegum-tint-300: #ff6699;
+  --color-bubblegum-tint-400: #ff3377;
+  --color-bubblegum-tint-500: #ff0055;
+  --color-bubblegum-tint-600: #cc0044;
+  --color-bubblegum-tint-700: #990033;
+  --color-bubblegum-tint-800: #660022;
+  --color-bubblegum-tint-900: #330011;
+  --color-bubblegum-tint-950: #24000c;
+
+  /* Blush Rose Palette */
+  --color-blush-rose-50: #fbe9f0;
+  --color-blush-rose-100: #f8d3e1;
+  --color-blush-rose-200: #f1a7c2;
+  --color-blush-rose-300: #ea7ba4;
+  --color-blush-rose-400: #e25085;
+  --color-blush-rose-500: #db2467;
+  --color-blush-rose-600: #af1d52;
+  --color-blush-rose-700: #84153e;
+  --color-blush-rose-800: #580e29;
+  --color-blush-rose-900: #2c0715;
+  --color-blush-rose-950: #1f050e;
+
+  /* Antique White Palette */
+  --color-antique-white-50: #fef1e6;
+  --color-antique-white-100: #fee4cd;
+  --color-antique-white-200: #fcc99c;
+  --color-antique-white-300: #fbae6a;
+  --color-antique-white-400: #fa9338;
+  --color-antique-white-500: #f97706;
+  --color-antique-white-600: #c76005;
+  --color-antique-white-700: #954804;
+  --color-antique-white-800: #633003;
+  --color-antique-white-900: #321801;
+  --color-antique-white-950: #231101;
 }
 
 @theme inline {
-  --color-sf-bg: var(--sf-bg);
-  --color-sf-bg-dark: var(--sf-bg-dark);
-  --color-sf-panel: var(--sf-panel);
-  --color-sf-panel-light: var(--sf-panel-light);
-  --color-sf-accent: var(--sf-accent);
-  --color-sf-primary: var(--sf-primary);
-  --color-sf-primary-hover: var(--sf-primary-hover);
-  --color-sf-text: var(--sf-text);
-  --color-sf-text-muted: var(--sf-text-muted);
-  --color-sf-border: var(--sf-border);
-  --color-sf-success: var(--sf-success);
-  --color-sf-warning: var(--sf-warning);
-  --color-sf-cat-work: var(--sf-cat-work);
-  --color-sf-cat-college: var(--sf-cat-college);
-  --color-sf-cat-coding: var(--sf-cat-coding);
-  --color-sf-cat-other: var(--sf-cat-other);
+  /* === THE SKY (Backgrounds) - Based on Blush Rose === */
+  --color-sky: #ea7ba4;
+  --color-sky-light: #f1a7c2;
+  --color-sky-dark: #af1d52;
+
+  /* === THE CLOUDS (Cards & Panels) - Based on Antique White === */
+  --color-cloud-white: #fef1e6;
+  --color-cloud-cream: #fee4cd;
+  --color-cloud-shadow: #c76005;
+
+  /* === TEXT & BORDERS - High Contrast === */
+  --color-ink: #320109;
+  --color-ink-dim: #650112;
+  --color-ink-border: #230006;
+
+  /* === ACCENTS (Buttons & Tags) === */
+  --color-pop-pink: #ff0055;
+  --color-pop-rose: #db2467;
+  --color-pop-gold: #f97706;
+  --color-pop-danger: #fc032c;
+
+  /* === CATEGORY COLORS === */
+  --color-cat-work: #ff0055;
+  --color-cat-college: #db2467;
+  --color-cat-coding: #f97706;
+  --color-cat-other: #af1d52;
 
   /* Fonts */
   --font-pixel: "Press Start 2P", cursive;
   --font-terminal: "VT323", monospace;
 
-  /* Pixel Shadows */
-  --shadow-pixel: 4px 4px 0px 0px rgba(0, 0, 0, 1);
-  --shadow-pixel-sm: 2px 2px 0px 0px rgba(0, 0, 0, 1);
-  --shadow-pixel-primary: 4px 4px 0px 0px var(--sf-primary);
+  /* Pixel Shadows - Updated for dreamy theme */
+  --shadow-pixel: 4px 4px 0px 0px var(--color-ink-border);
+  --shadow-pixel-sm: 2px 2px 0px 0px var(--color-ink-border);
+  --shadow-pixel-primary: 4px 4px 0px 0px var(--color-pop-pink);
 }
 
 /* Base Styles */
@@ -59,8 +105,8 @@
 }
 
 body {
-  background-color: var(--sf-bg);
-  color: var(--sf-text);
+  background-color: var(--color-sky);
+  color: var(--color-ink);
   font-family: "VT323", monospace;
   font-size: 20px;
   line-height: 1.4;
@@ -77,15 +123,15 @@ body {
 }
 
 .shadow-pixel {
-  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  box-shadow: 4px 4px 0px 0px var(--color-ink-border);
 }
 
 .shadow-pixel-sm {
-  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+  box-shadow: 2px 2px 0px 0px var(--color-ink-border);
 }
 
 .shadow-pixel-primary {
-  box-shadow: 4px 4px 0px 0px var(--sf-primary);
+  box-shadow: 4px 4px 0px 0px var(--color-pop-pink);
 }
 
 /* Scanline Effect (optional subtle CRT feel) */
@@ -95,8 +141,8 @@ body {
   inset: 0;
   background: repeating-linear-gradient(
     0deg,
-    rgba(0, 0, 0, 0.1) 0px,
-    rgba(0, 0, 0, 0.1) 1px,
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.05) 1px,
     transparent 1px,
     transparent 2px
   );
@@ -130,27 +176,27 @@ body {
   box-shadow: none !important;
 }
 
-/* Scrollbar Styling */
+/* Scrollbar Styling - Dreamy Cloud Theme */
 ::-webkit-scrollbar {
   width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--sf-bg-dark);
-  border: 2px solid var(--sf-border);
+  background: var(--color-sky-dark);
+  border: 2px solid var(--color-ink-border);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--sf-panel);
-  border: 2px solid var(--sf-border);
+  background: var(--color-cloud-cream);
+  border: 2px solid var(--color-ink-border);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--sf-panel-light);
+  background: var(--color-cloud-white);
 }
 
 /* Selection Color */
 ::selection {
-  background: var(--sf-primary);
-  color: var(--sf-text);
+  background: var(--color-pop-pink);
+  color: var(--color-cloud-white);
 }

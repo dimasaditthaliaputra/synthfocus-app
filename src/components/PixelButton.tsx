@@ -17,9 +17,9 @@ export function PixelButton({
   ...props
 }: PixelButtonProps) {
   const variantStyles = {
-    primary: "bg-sf-primary hover:bg-sf-primary-hover text-white",
-    secondary: "bg-sf-panel-light hover:bg-sf-accent text-sf-text",
-    danger: "bg-red-600 hover:bg-red-500 text-white",
+    primary: "bg-pop-pink hover:bg-pop-rose text-cloud-white",
+    secondary: "bg-cloud-cream hover:bg-cloud-white text-ink",
+    danger: "bg-pop-danger hover:bg-cotton-candy-600 text-cloud-white",
     success: "bg-emerald-600 hover:bg-emerald-500 text-white",
   };
 
@@ -33,7 +33,7 @@ export function PixelButton({
     <button
       className={`
         font-terminal
-        border-4 border-sf-border
+        border-4 border-ink-border
         ${variantStyles[variant]}
         ${sizeStyles[size]}
         shadow-pixel

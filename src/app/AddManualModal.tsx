@@ -34,13 +34,13 @@ export function AddManualModal({ onSave, onClose }: AddManualModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/80" onClick={onClose} />
+      <div className="absolute inset-0 bg-ink/80" onClick={onClose} />
 
       {/* Modal */}
       <PixelCard className="relative w-full max-w-md p-6 z-10">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-pixel text-sm text-sf-success uppercase tracking-wider">New Quest</h2>
-          <button onClick={onClose} className="text-sf-text-muted hover:text-sf-text transition-colors">
+          <h2 className="font-pixel text-sm text-pop-pink uppercase tracking-wider">New Quest</h2>
+          <button onClick={onClose} className="text-ink-dim hover:text-ink transition-colors">
             <X size={24} strokeWidth={3} />
           </button>
         </div>
@@ -65,7 +65,7 @@ export function AddManualModal({ onSave, onClose }: AddManualModalProps) {
           />
 
           <div>
-            <label className="block font-pixel text-xs text-sf-text-muted mb-2 uppercase">Category</label>
+            <label className="block font-pixel text-xs text-ink-dim mb-2 uppercase">Category</label>
             <div className="grid grid-cols-2 gap-2">
               {categories.map((cat) => (
                 <button
@@ -74,13 +74,13 @@ export function AddManualModal({ onSave, onClose }: AddManualModalProps) {
                   onClick={() => setCategory(cat.value)}
                   className={`
                     font-terminal text-lg
-                    border-4 border-sf-border
+                    border-4 border-ink-border
                     px-4 py-2
                     transition-colors
                     ${
                       category === cat.value
-                        ? "bg-sf-primary text-white shadow-pixel-sm"
-                        : "bg-sf-bg-dark text-sf-text-muted hover:bg-sf-accent"
+                        ? "bg-pop-pink text-cloud-white shadow-pixel-sm"
+                        : "bg-cloud-cream text-ink hover:bg-sky-light"
                     }
                   `}
                 >

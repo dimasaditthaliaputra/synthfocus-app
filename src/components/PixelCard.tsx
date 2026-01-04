@@ -10,15 +10,15 @@ interface PixelCardProps {
 
 export function PixelCard({ children, className = "", variant = "default" }: PixelCardProps) {
   const variantStyles = {
-    default: "bg-sf-panel",
-    dark: "bg-sf-bg-dark",
-    accent: "bg-sf-accent",
+    default: "bg-cloud-white",
+    dark: "bg-sky-dark",
+    accent: "bg-cloud-cream",
   };
 
   return (
     <div
       className={`
-        border-4 border-sf-border
+        border-4 border-ink-border
         ${variantStyles[variant]}
         shadow-pixel
         rounded-none
