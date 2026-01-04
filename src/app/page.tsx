@@ -89,7 +89,9 @@ export default function Home() {
           <PixelCard className="mb-8 p-4 md:p-6">
             <div className="flex items-center gap-3 mb-4">
               <Terminal size={20} className="text-pop-pink" strokeWidth={3} />
-              <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider animate-retro-typing">Command Center</h2>
+              <h2 className="font-pixel text-xs text-pop-pink uppercase tracking-wider animate-retro-typing">
+                Command Center
+              </h2>
             </div>
 
             <PixelTextarea
@@ -139,9 +141,9 @@ export default function Home() {
                 ))}
               </h2>
               {schedule.length > 0 && (
-                <div className="flex gap-3 font-terminal text-lg">
-                  <span className="text-pop-gold">{pendingCount} pending</span>
-                  <span className="text-emerald-600">{doneCount} done</span>
+                <div className="flex gap-3 font-terminal text-xl">
+                  <span className="text-cloud-cream drop-shadow-[1px_1px_0px_#230006]">{pendingCount} pending</span>
+                  <span className="text-cloud-white drop-shadow-[1px_1px_0px_#230006]">{doneCount} done</span>
                 </div>
               )}
             </div>

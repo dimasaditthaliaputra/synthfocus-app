@@ -91,7 +91,7 @@ export function AddManualModal({ onSave, onClose }: AddManualModalProps) {
           </div>
 
           <div className="flex gap-3 pt-4">
-            <PixelButton type="submit" variant="success" className="flex-1">
+            <PixelButton type="submit" variant="primary" className="flex-1">
               <Plus size={18} className="mr-2" strokeWidth={3} />
               ADD QUEST
             </PixelButton>

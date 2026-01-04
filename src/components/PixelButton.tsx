@@ -44,6 +44,7 @@ export function PixelButton({
         uppercase
         tracking-wide
         transition-colors
+        flex items-center justify-center gap-2
         ${disabled ? "opacity-50 cursor-not-allowed" : ""}
         ${className}
       `}
