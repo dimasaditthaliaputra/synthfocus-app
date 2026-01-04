@@ -1,0 +1,108 @@
+"use client";
+
+import { useState } from "react";
+import { ScheduleItem, Category } from "@/types";
+import { PixelCard, PixelButton, PixelInput } from "@/components";
+import { X, Save } from "lucide-react";
+
+interface EditModalProps {
+  item: ScheduleItem;
+  onSave: (item: ScheduleItem) => void;
+  onClose: () => void;
+}
+
+const categories: { value: Category; label: string }[] = [
+  { value: "work", label: "WORK" },
+  { value: "college", label: "COLLEGE" },
+  { value: "coding", label: "CODING" },
+  { value: "other", label: "OTHER" },
+];
+
+export function EditModal({ item, onSave, onClose }: EditModalProps) {
+  const [time, setTime] = useState(item.time);
+  const [activity, setActivity] = useState(item.activity);
+  const [category, setCategory] = useState<Category>(item.category);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave({
+      ...item,
+      time,
+      activity,
+      category,
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/80" onClick={onClose} />
+
+      {/* Modal */}
+      <PixelCard className="relative w-full max-w-md p-6 z-10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-pixel text-sm text-sf-warning uppercase tracking-wider">Edit Quest</h2>
+          <button onClick={onClose} className="text-sf-text-muted hover:text-sf-text transition-colors">
+            <X size={24} strokeWidth={3} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <PixelInput
+            label="Time"
+            type="text"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            placeholder="08:00"
+            required
+          />
+
+          <PixelInput
+            label="Activity"
+            type="text"
+            value={activity}
+            onChange={(e) => setActivity(e.target.value)}
+            placeholder="What are you doing?"
+            required
+          />
+
+          <div>
+            <label className="block font-pixel text-xs text-sf-text-muted mb-2 uppercase">Category</label>
+            <div className="grid grid-cols-2 gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat.value}
+                  type="button"
+                  onClick={() => setCategory(cat.value)}
+                  className={`
+                    font-terminal text-lg
+                    border-4 border-sf-border
+                    px-4 py-2
+                    transition-colors
+                    ${
+                      category === cat.value
+                        ? "bg-sf-primary text-white shadow-pixel-sm"
+                        : "bg-sf-bg-dark text-sf-text-muted hover:bg-sf-accent"
+                    }
+                  `}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <PixelButton type="submit" variant="success" className="flex-1">
+              <Save size={18} className="mr-2" strokeWidth={3} />
+              SAVE
+            </PixelButton>
+            <PixelButton type="button" variant="secondary" onClick={onClose}>
+              CANCEL
+            </PixelButton>
+          </div>
+        </form>
+      </PixelCard>
+    </div>
+  );
+}

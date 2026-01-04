@@ -1,0 +1,156 @@
+/* Google Fonts - Pixel Art Typography */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+
+@import "tailwindcss";
+
+/* Synthfocus Theme Variables */
+:root {
+  --sf-bg: #1a1a2e;
+  --sf-bg-dark: #0f0f1a;
+  --sf-panel: #16213e;
+  --sf-panel-light: #1f2b47;
+  --sf-accent: #0f3460;
+  --sf-primary: #e94560;
+  --sf-primary-hover: #ff6b8a;
+  --sf-text: #eee;
+  --sf-text-muted: #aaa;
+  --sf-border: #000;
+  --sf-success: #00ff88;
+  --sf-warning: #ffaa00;
+
+  /* Category Colors */
+  --sf-cat-work: #00ffff;
+  --sf-cat-college: #ff00ff;
+  --sf-cat-coding: #ffff00;
+  --sf-cat-other: #888888;
+}
+
+@theme inline {
+  --color-sf-bg: var(--sf-bg);
+  --color-sf-bg-dark: var(--sf-bg-dark);
+  --color-sf-panel: var(--sf-panel);
+  --color-sf-panel-light: var(--sf-panel-light);
+  --color-sf-accent: var(--sf-accent);
+  --color-sf-primary: var(--sf-primary);
+  --color-sf-primary-hover: var(--sf-primary-hover);
+  --color-sf-text: var(--sf-text);
+  --color-sf-text-muted: var(--sf-text-muted);
+  --color-sf-border: var(--sf-border);
+  --color-sf-success: var(--sf-success);
+  --color-sf-warning: var(--sf-warning);
+  --color-sf-cat-work: var(--sf-cat-work);
+  --color-sf-cat-college: var(--sf-cat-college);
+  --color-sf-cat-coding: var(--sf-cat-coding);
+  --color-sf-cat-other: var(--sf-cat-other);
+
+  /* Fonts */
+  --font-pixel: "Press Start 2P", cursive;
+  --font-terminal: "VT323", monospace;
+
+  /* Pixel Shadows */
+  --shadow-pixel: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  --shadow-pixel-sm: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+  --shadow-pixel-primary: 4px 4px 0px 0px var(--sf-primary);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--sf-bg);
+  color: var(--sf-text);
+  font-family: "VT323", monospace;
+  font-size: 20px;
+  line-height: 1.4;
+  min-height: 100vh;
+}
+
+/* Utility Classes for Pixel Art */
+.font-pixel {
+  font-family: "Press Start 2P", cursive;
+}
+
+.font-terminal {
+  font-family: "VT323", monospace;
+}
+
+.shadow-pixel {
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.shadow-pixel-sm {
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.shadow-pixel-primary {
+  box-shadow: 4px 4px 0px 0px var(--sf-primary);
+}
+
+/* Scanline Effect (optional subtle CRT feel) */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1) 0px,
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+/* Blinking Cursor Animation */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink::after {
+  content: "_";
+  animation: blink 1s step-end infinite;
+}
+
+/* Button Press Effect */
+.btn-pixel {
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+}
+
+.btn-pixel:active {
+  transform: translate(4px, 4px);
+  box-shadow: none !important;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sf-bg-dark);
+  border: 2px solid var(--sf-border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sf-panel);
+  border: 2px solid var(--sf-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sf-panel-light);
+}
+
+/* Selection Color */
+::selection {
+  background: var(--sf-primary);
+  color: var(--sf-text);
+}
