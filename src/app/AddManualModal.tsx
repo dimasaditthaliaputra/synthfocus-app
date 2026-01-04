@@ -37,7 +37,7 @@ export function AddManualModal({ onSave, onClose }: AddManualModalProps) {
       <div className="absolute inset-0 bg-ink/80" onClick={onClose} />
 
       {/* Modal */}
-      <PixelCard className="relative w-full max-w-md p-6 z-10">
+      <PixelCard className="relative w-full max-w-md p-6 z-10 animate-pixel-popup">
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-pixel text-sm text-pop-pink uppercase tracking-wider">New Quest</h2>
           <button onClick={onClose} className="text-ink-dim hover:text-ink transition-colors">

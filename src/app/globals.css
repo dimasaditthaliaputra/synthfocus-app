@@ -303,3 +303,31 @@ body {
   border-right: 3px solid var(--color-pop-pink);
   animation: retroType 5s steps(15) infinite, retroCursor 0.6s steps(1) infinite;
 }
+
+/* ===================================
+   RETRO MODAL POPUP ANIMATION
+   =================================== */
+@keyframes pixelPopup {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.95);
+  }
+  80% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pixel-popup {
+  animation: pixelPopup 0.4s steps(8) forwards;
+}
